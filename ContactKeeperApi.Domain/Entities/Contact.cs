@@ -1,4 +1,6 @@
-﻿namespace ContactKeeperApi.Domain.Entities
+﻿using ContactKeeperApi.Domain.Enum;
+
+namespace ContactKeeperApi.Domain.Entities
 {
     public class Contact : Entity
     {
@@ -7,5 +9,6 @@
         public bool Active { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
+        public EContactType Type { get; set; }
     }
 }

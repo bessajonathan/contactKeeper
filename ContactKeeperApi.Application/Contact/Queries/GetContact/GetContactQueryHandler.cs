@@ -22,7 +22,10 @@ namespace ContactKeeperApi.Application.Contact.Queries.GetContact
         }
         public async Task<IViewModel<ContactViewModel>> Handle(GetContactQuery request, CancellationToken cancellationToken)
         {
-            var contact = await context.Contacts.FirstOrDefaultAsync(x => x.Id == request.Id);
+            var contact = await context
+                .Contacts
+                .Include(x => x.User)
+                .FirstOrDefaultAsync(x => x.Id == request.Id && x.UserId == request.UserId);
 
             if (contact is null)
                 throw new NotFoundException($"O contato com id {request.Id} não existe");

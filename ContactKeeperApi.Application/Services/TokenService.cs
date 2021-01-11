@@ -40,6 +40,7 @@ namespace ContactKeeperApi.Application.Services
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(key),
                     SecurityAlgorithms.HmacSha256Signature),
+                Issuer = options.Value.Issuer
             };
 
             var token = handler.CreateToken(tokenDescriptor);

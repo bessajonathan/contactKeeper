@@ -1,5 +1,5 @@
-﻿using ContactKeeperApi.Application.Interfaces;
-using ContactKeeperApi.Application.User.Commands;
+﻿using ContactKeeperApi.Application.Auth.ViewModel;
+using ContactKeeperApi.Application.Interfaces;
 using ContactKeeperApi.Application.User.Commands.Create;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ContactKeeperAPI.Controllers
 {
-    [Route("v1/user")]
+    [Route("v1/users")]
     public class UserController : Controller
     {
         private readonly IMediator mediator;
@@ -19,18 +19,21 @@ namespace ContactKeeperAPI.Controllers
         {
             this.mediator = mediator;
         }
-
+        /// <summary>
+        /// Cria novo usuario
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
         [HttpPost]
-        [AllowAnonymous]
         [OpenApiTag("Usuarios")]
-        [ProducesResponseType(typeof(IViewModel<UserViewModel>), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(IViewModel<TokenViewModel>), (int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Create([FromBody] CreateUserCommand command)
         {
             if (command is null)
                 BadRequest();
 
-            return Ok(await mediator.Send(command));
+            return Created(string.Empty,await mediator.Send(command));
         }
     }
 }

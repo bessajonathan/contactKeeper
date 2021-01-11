@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ContactKeeperAPI</name>
+    </assembly>
+    <members>
+        <member name="M:ContactKeeperAPI.Controllers.AuthController.SignIn(ContactKeeperApi.Application.Auth.SignInCommand)">
+            <summary>
+            Realiza o login
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ContactKeeperAPI.Controllers.ContactController.Create(ContactKeeperApi.Application.Commands.Contact.Create.CreateContactCommand)">
+            <summary>
+            Cria novo contato
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ContactKeeperAPI.Controllers.ContactController.GetAll(ContactKeeperApi.Application.Contact.Queries.GetContacts.GetContactsQuery)">
+            <summary>
+            Lista todos os contatos do usuário logado
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ContactKeeperAPI.Controllers.ContactController.Get(System.Int32)">
+            <summary>
+            Busca o contato pelo id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ContactKeeperAPI.Controllers.ContactController.Delete(System.Int32)">
+            <summary>
+            Remove o contato pelo id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ContactKeeperAPI.Controllers.ContactController.Update(System.Int32,ContactKeeperApi.Application.Contact.Commands.Update.UpdateContactCommand)">
+            <summary>
+            Atualiza o contato 
+            </summary>
+            <param name="id"></param>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ContactKeeperAPI.Controllers.UserController.Create(ContactKeeperApi.Application.User.Commands.Create.CreateUserCommand)">
+            <summary>
+            Cria novo usuario
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

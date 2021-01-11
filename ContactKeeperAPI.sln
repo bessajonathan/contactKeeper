@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactKeeperApi.Domain", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactKeeperApi.Infra", "ContactKeeperApi.Infrastructure\ContactKeeperApi.Infra.csproj", "{4AC93324-AAEC-430C-A479-41F88CC0D473}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactKeeperApi.Common", "ContactKeeperApi.Common\ContactKeeperApi.Common.csproj", "{8A12B6E2-F3E4-429E-BEBB-701967D36EAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactKeeperApi.Common", "ContactKeeperApi.Common\ContactKeeperApi.Common.csproj", "{8A12B6E2-F3E4-429E-BEBB-701967D36EAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

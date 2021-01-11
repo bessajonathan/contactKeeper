@@ -1,4 +1,5 @@
 ﻿using ContactKeeperApi.Application.Commands.Contact.Create;
+using ContactKeeperApi.Application.Contact.Commands.Delete;
 using ContactKeeperApi.Application.Contact.Commands.Update;
 using ContactKeeperApi.Application.Contact.Queries.GetContact;
 using ContactKeeperApi.Application.Contact.Queries.GetContacts;
@@ -12,9 +13,15 @@ using System.Threading.Tasks;
 
 namespace ContactKeeperAPI.Controllers
 {
-    [Route("v1/contact")]
+    [Authorize("Bearer")]
+    [Route("v1/contacts")]
     public class ContactController : BaseController
     {
+        /// <summary>
+        /// Cria novo contato
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize("Bearer")]
         [OpenApiTag("Contatos")]
@@ -27,11 +34,15 @@ namespace ContactKeeperAPI.Controllers
 
             command.UserId = UserId;
 
-            return Ok(await Mediator.Send(command));
+            return Created("",await Mediator.Send(command));
         }
 
+        /// <summary>
+        /// Lista todos os contatos do usuário logado
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
         [HttpGet]
-        [Authorize("Bearer")]
         [OpenApiTag("Contatos")]
         [ProducesResponseType(typeof(IListViewModel<ContactViewModel>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
@@ -45,24 +56,43 @@ namespace ContactKeeperAPI.Controllers
             return Ok(await Mediator.Send(query));
         }
 
+        /// <summary>
+        /// Busca o contato pelo id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
-        [Authorize("Bearer")]
         [OpenApiTag("Contatos")]
         [ProducesResponseType(typeof(IViewModel<ContactViewModel>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> Get([FromRoute] int id)
         {
-            var query = new GetContactQuery
-            {
-                UserId = UserId,
-                Id = id
-            };
-
-            return Ok(await Mediator.Send(query));
+            return Ok(await Mediator.Send(new GetContactQuery(id,UserId)));
         }
 
+        /// <summary>
+        /// Remove o contato pelo id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id}")]
+        [OpenApiTag("Contatos")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            await Mediator.Send(new DeleteContactCommand(id,UserId));
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Atualiza o contato 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="command"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
-        [Authorize("Bearer")]
         [OpenApiTag("Contatos")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
@@ -70,7 +100,9 @@ namespace ContactKeeperAPI.Controllers
         {
             if (command is null)
                 return BadRequest();
+
             command.UserId = UserId;
+            command.Id = id;
 
             return Ok(await Mediator.Send(command));
         }

@@ -5,27 +5,25 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ContactKeeperApi.Application.Contact.Commands.Update
+namespace ContactKeeperApi.Application.Contact.Commands.Delete
 {
-    public class UpdateContactCommandHandler : IRequestHandler<UpdateContactCommand, Unit>
+    public class DeleteContactCommandHandler : IRequestHandler<DeleteContactCommand, Unit>
     {
         private readonly IContactKeeperContext context;
 
-        public UpdateContactCommandHandler(IContactKeeperContext context)
+        public DeleteContactCommandHandler(IContactKeeperContext context)
         {
             this.context = context;
         }
-        public async Task<Unit> Handle(UpdateContactCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeleteContactCommand request, CancellationToken cancellationToken)
         {
             var contact = await context.Contacts
-                .FirstOrDefaultAsync(x => x.Id == request.Id && x.UserId == request.UserId,cancellationToken);
+                .FirstOrDefaultAsync(x => x.Id == request.Id && x.UserId == request.UserId, cancellationToken);
 
-            if(contact is null)
+            if (contact is null)
                 throw new NotFoundException($"O Contato com id {request.Id} não foi encontrado");
 
-            contact.Number = request.Number;
-
-            context.Contacts.Update(contact);
+            context.Contacts.Remove(contact);
             await context.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;

@@ -5,8 +5,13 @@ using MediatR;
 
 namespace ContactKeeperApi.Application.Contact.Queries.GetContact
 {
-    public class GetContactQuery : Base, IRequest<IViewModel<ContactViewModel>>
+    public class GetContactQuery : CommandBase, IRequest<IViewModel<ContactViewModel>>
     {
-        public int Id { get; set; }
+        public GetContactQuery(int id, int userId)
+        {
+            Id = id;
+            UserId = userId;
+        }
+        public int Id { get; private set; }
     }
 }

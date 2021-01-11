@@ -3,14 +3,16 @@ using System;
 using ContactKeeperApi.Infra.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ContactKeeperApi.Infra.Migrations
 {
     [DbContext(typeof(ContactKeeperContext))]
-    partial class ContactKeeperContextModelSnapshot : ModelSnapshot
+    [Migration("20210111003811_Isert_new_column_on_the_table_contacts")]
+    partial class Isert_new_column_on_the_table_contacts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

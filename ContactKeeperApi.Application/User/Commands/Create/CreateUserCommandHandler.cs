@@ -1,30 +1,29 @@
 ﻿using AutoMapper;
+using ContactKeeperApi.Application.Auth.ViewModel;
 using ContactKeeperApi.Application.Interfaces;
 using ContactKeeperApi.Application.ViewModels;
 using ContactKeeperApi.Common;
-using ContactKeeperApi.Common.Exceptions;
-using ContactKeeperApi.Domain.Entities;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace ContactKeeperApi.Application.User.Commands.Create
 {
-    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, IViewModel<UserViewModel>>
+    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, IViewModel<TokenViewModel>>
     {
         private readonly IContactKeeperContext context;
         private readonly IMapper mapper;
+        private readonly ITokenService tokenService;
 
-        public CreateUserCommandHandler(IContactKeeperContext context,IMapper mapper)
+        public CreateUserCommandHandler(IContactKeeperContext context, IMapper mapper, ITokenService tokenService)
         {
             this.context = context;
             this.mapper = mapper;
+            this.tokenService = tokenService;
         }
 
-        public async Task<IViewModel<UserViewModel>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<IViewModel<TokenViewModel>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            if (request.Password != request.PasswordConfirm)
-                throw new BusinessException("Senhas não conferem");
 
             var user = new Domain.Entities.User
             {
@@ -36,9 +35,9 @@ namespace ContactKeeperApi.Application.User.Commands.Create
             context.Users.Add(user);
             await context.SaveChangesAsync(cancellationToken);
 
-            return new ViewModel<UserViewModel>
+            return new ViewModel<TokenViewModel>
             {
-                Data = mapper.Map<UserViewModel>(user)
+                Data = tokenService.GenerateToken(user)
             };
         }
     }

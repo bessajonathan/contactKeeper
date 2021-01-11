@@ -1,17 +1,15 @@
 ﻿using ContactKeeperApi.Application.Contact.ViewModel;
+using ContactKeeperApi.Application.Infrastructure;
 using ContactKeeperApi.Application.Interfaces;
+using ContactKeeperApi.Domain.Enum;
 using MediatR;
-using Newtonsoft.Json;
-using NSwag.Annotations;
 
 namespace ContactKeeperApi.Application.Commands.Contact.Create
 {
-    public class CreateContactCommand : IRequest<IViewModel<ContactViewModel>>
+    public class CreateContactCommand : CommandBase,IRequest<IViewModel<ContactViewModel>>
     {
-        public string Number { get; set; }
 
-        [JsonIgnore]
-        [OpenApiIgnore]
-        public int UserId { get; set; }
+        public string Number { get; set; }
+        public EContactType Type { get; set; }
     }
 }

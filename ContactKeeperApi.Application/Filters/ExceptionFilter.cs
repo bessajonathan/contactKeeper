@@ -3,8 +3,6 @@ using ContactKeeperApi.Common.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using System;
 using System.Net;
 
 namespace ContactKeeperApi.Application.Filters

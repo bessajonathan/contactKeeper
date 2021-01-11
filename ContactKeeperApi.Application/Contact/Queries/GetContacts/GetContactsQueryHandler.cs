@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using ContactKeeperApi.Application.Contact.ViewModel;
-using ContactKeeperApi.Application.Infrastructure;
 using ContactKeeperApi.Application.Interfaces;
 using ContactKeeperApi.Application.ViewModels;
+using ContactKeeperApi.Common.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -30,6 +30,9 @@ namespace ContactKeeperApi.Application.Contact.Queries.GetContacts
                 .OrderBy(x => request.OrderBy)
                 .Where(x => x.UserId == request.UserId)
                 .ToPagedListAsync(request.Page, request.PageSize);
+
+            if (data.Count == 0)
+                throw new NotFoundException("Dados não econtrados.");
 
             return new ListViewModel<ContactViewModel>
             {

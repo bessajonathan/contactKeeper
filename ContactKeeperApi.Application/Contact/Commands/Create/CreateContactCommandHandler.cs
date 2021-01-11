@@ -1,9 +1,7 @@
-﻿using AutoMapper;
+﻿using ContactKeeperApi.Application.Contact.Queries.GetContact;
 using ContactKeeperApi.Application.Contact.ViewModel;
 using ContactKeeperApi.Application.Interfaces;
-using ContactKeeperApi.Application.ViewModels;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,30 +10,26 @@ namespace ContactKeeperApi.Application.Commands.Contact.Create
     public class CreateContactCommandHandler : IRequestHandler<CreateContactCommand, IViewModel<ContactViewModel>>
     {
         private readonly IContactKeeperContext context;
-        private readonly IMapper mapper;
+        private readonly IMediator mediator;
 
-        public CreateContactCommandHandler(IContactKeeperContext context, IMapper mapper)
+        public CreateContactCommandHandler(IContactKeeperContext context, IMediator mediator)
         {
             this.context = context;
-            this.mapper = mapper;
+            this.mediator = mediator;
         }
         public async Task<IViewModel<ContactViewModel>> Handle(CreateContactCommand request, CancellationToken cancellationToken)
         {
             var contact = new Domain.Entities.Contact
             {
                 Number = request.Number,
-                UserId = request.UserId
+                UserId = request.UserId,
+                Type = request.Type
             };
 
             context.Contacts.Add(contact);
             await context.SaveChangesAsync(cancellationToken);
 
-            contact.User = await context.Users.FirstOrDefaultAsync(x => x.Id == request.UserId);
-
-            return new ViewModel<ContactViewModel>
-            {
-                Data = mapper.Map<ContactViewModel>(contact)
-            };
+            return await mediator.Send(new GetContactQuery(contact.Id,request.UserId));
         }
     }
 }

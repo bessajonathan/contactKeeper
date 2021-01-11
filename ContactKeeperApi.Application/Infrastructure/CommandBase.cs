@@ -3,7 +3,7 @@ using NSwag.Annotations;
 
 namespace ContactKeeperApi.Application.Infrastructure
 {
-    public class Base
+    public class CommandBase
     {
         [JsonIgnore]
         [OpenApiIgnore]
