@@ -2,6 +2,7 @@ using AutoMapper;
 using ContactKeeperApi.Application.Filters;
 using ContactKeeperApi.Application.Interfaces;
 using ContactKeeperApi.Application.Services;
+using ContactKeeperApi.Application.User.Commands;
 using ContactKeeperApi.Application.User.Commands.Create;
 using ContactKeeperApi.Common;
 using ContactKeeperApi.Infra.Configurations;
@@ -19,12 +20,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Any;
-using Microsoft.OpenApi.Interfaces;
-using Microsoft.OpenApi.Models;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace ContactKeeperAPI
 {
@@ -98,12 +96,14 @@ namespace ContactKeeperAPI
             {
                 options.Filters.Add(typeof(ExceptionFilter));
             })
+            .AddJsonOptions(x =>
+            {
+                x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            })
             .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateUserCommandValidator>());
 
             //Adicionando AutoMapper
-
             services.AddAutoMapper(typeof(AutoMapperProfile));
-
 
             services.AddTransient<ITokenService, TokenService>();
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPreProcessorBehavior<,>));

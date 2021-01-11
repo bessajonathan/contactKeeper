@@ -7,7 +7,7 @@ namespace ContactKeeperApi.Application.Commands.Contact.Create
         public CreateContactCommandValidator()
         {
             RuleFor(x => x.Number).NotEmpty().NotNull().MaximumLength(20);
-            RuleFor(x => x.Type).IsInEnum();
+            RuleFor(x => x.Type).NotEmpty().NotNull().IsInEnum();
         }
     }
 }
