@@ -5,7 +5,7 @@ Api developed for study
 Technologies used
 
 MediaTR,
-FluentValidator,
+FluentValidation,
 Jwt,
 Swagger,
 AutoMapper,

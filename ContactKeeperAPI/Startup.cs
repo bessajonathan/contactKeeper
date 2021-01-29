@@ -1,8 +1,8 @@
 using AutoMapper;
 using ContactKeeperApi.Application.Filters;
+using ContactKeeperApi.Application.Infrastructure;
 using ContactKeeperApi.Application.Interfaces;
 using ContactKeeperApi.Application.Services;
-using ContactKeeperApi.Application.User.Commands;
 using ContactKeeperApi.Application.User.Commands.Create;
 using ContactKeeperApi.Common;
 using ContactKeeperApi.Infra.Configurations;
@@ -103,7 +103,7 @@ namespace ContactKeeperAPI
             .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateUserCommandValidator>());
 
             //Adicionando AutoMapper
-            services.AddAutoMapper(typeof(AutoMapperProfile));
+            services.AddAutoMapper(new Assembly[] { typeof(AutoMapperProfiles).GetTypeInfo().Assembly });
 
             services.AddTransient<ITokenService, TokenService>();
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPreProcessorBehavior<,>));
