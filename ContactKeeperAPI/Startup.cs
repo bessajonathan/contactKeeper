@@ -38,7 +38,6 @@ namespace ContactKeeperAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
 
             var settings = Configuration.GetSection("ApplicationSettings").Get<ApplicationSettings>();
 
@@ -83,7 +82,9 @@ namespace ContactKeeperAPI
                 x.Description = "Api criada para estudo";
             });
 
-            //Configurações do banco
+            services.AddCors();
+
+                //Configurações do banco
 
             services.AddDbContext<IContactKeeperContext, ContactKeeperContext>(options =>
            options.UseSqlite(Configuration.GetConnectionString("Database")));
@@ -118,6 +119,12 @@ namespace ContactKeeperAPI
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(option =>
+            {
+                option.AllowAnyOrigin();
+                option.AllowAnyHeader();
+                option.AllowAnyMethod();
+            });
             app.UseStaticFiles();
             app.UseOpenApi();
             app.UseReDoc(x =>
