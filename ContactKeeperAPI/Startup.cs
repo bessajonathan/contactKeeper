@@ -87,7 +87,7 @@ namespace ContactKeeperAPI
                 //Configurações do banco
 
             services.AddDbContext<IContactKeeperContext, ContactKeeperContext>(options =>
-           options.UseSqlite(Configuration.GetConnectionString("Database")));
+           options.UseNpgsql(Configuration.GetConnectionString("Database")));
 
             //Adicionando MediatR
             services.AddMediatR(typeof(CreateUserCommand).GetTypeInfo().Assembly);
