@@ -15,11 +15,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -38,6 +40,16 @@ namespace ContactKeeperAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Adicionando compressão
+            services.AddResponseCompression(option =>
+            {
+                option.Providers.Add<GzipCompressionProvider>();
+                option.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "application/json" });
+            });
+
+            //Adiciona cache na aplicação inteira
+            //Coloquei no método de autenticação um exemplo para usar em uma rota específica
+            // services.AddResponseCaching();
 
             var settings = Configuration.GetSection("ApplicationSettings").Get<ApplicationSettings>();
 
@@ -84,7 +96,7 @@ namespace ContactKeeperAPI
 
             services.AddCors();
 
-                //Configura��es do banco
+            //Configura��es do banco
 
             services.AddDbContext<IContactKeeperContext, ContactKeeperContext>(options =>
            options.UseNpgsql(Configuration.GetConnectionString("Database")));

@@ -20,6 +20,10 @@ namespace ContactKeeperAPI.Controllers
         [OpenApiTag("Autenticação")]
         [ProducesResponseType(typeof(IViewModel<TokenViewModel>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        //Linha abaixo adiciona o cache
+        [ResponseCache(VaryByHeader = "User-Agent", Location = ResponseCacheLocation.Any, Duration = 30)]
+        //Linha abaixo remove o cache caso na startup esteja adicionada para toda aplicação
+        // [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> SignIn([FromBody] SignInCommand command)
         {
             if (command is null)
